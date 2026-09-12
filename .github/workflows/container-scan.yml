@@ -24,13 +24,15 @@ jobs:
         shell: pwsh
         run: |
           docker build `
+            --pull `
             --tag azure-devsecops-demo-app:${{ github.sha }} `
             .
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: "azure-devsecops-demo-app:${{ github.sha }}"
+          scanners: "vuln"
           format: "json"
           output: "trivy-report.json"
           severity: "CRITICAL,HIGH"
